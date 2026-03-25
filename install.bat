@@ -68,6 +68,35 @@ if errorlevel 1 (
 call :beep_ok
 
 echo.
+echo Checking Bluetooth...
+sc query bthserv >nul 2>&1
+if errorlevel 1 (
+    echo   [!] Bluetooth Support Service not running.
+    echo       Enable Bluetooth in Windows Settings.
+) else (
+    echo   [OK] Bluetooth service running
+    call :beep_ok
+)
+
+powershell -NoProfile -Command "if ((Get-PnpDevice -Class Bluetooth -ErrorAction SilentlyContinue | Where-Object Status -eq 'OK').Count -gt 0) { exit 0 } else { exit 1 }" >nul 2>&1
+if errorlevel 1 (
+    echo   [!] No active Bluetooth adapter detected.
+) else (
+    echo   [OK] Bluetooth adapter OK
+)
+
+if not exist "device_mac.txt" (
+    echo.
+    echo   If the remote has not been paired yet:
+    echo     1. Open Windows Settings - Bluetooth and devices
+    echo     2. Click "Add device" - Bluetooth
+    echo     3. Press the power button on the remote to make it discoverable
+    echo     4. Select FEELWORLD-05 from the list
+    echo.
+    pause
+)
+
+echo.
 call :beep_done
 echo  ==========================================
 echo    Done! Launching controller...
