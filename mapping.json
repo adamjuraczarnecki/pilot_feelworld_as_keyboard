@@ -1,0 +1,111 @@
+{
+  "_info": {
+    "chars": [
+      "00001001-e619-419b-bc43-821e71a409b7",
+      "00001002-e619-419b-bc43-821e71a409b7"
+    ],
+    "available_actions": [
+      "space",
+      "right",
+      "left",
+      "up",
+      "down",
+      "escape",
+      "f11",
+      "scroll_up",
+      "scroll_down"
+    ]
+  },
+  "buttons": [
+    {
+      "button": "OK",
+      "char": "1002",
+      "type": "button",
+      "byte": 6,
+      "bit": 4,
+      "mask": "0x10",
+      "action": "space",
+      "trigger": "press"
+    },
+    {
+      "button": "Menu",
+      "char": "1002",
+      "type": "button",
+      "byte": 7,
+      "bit": 2,
+      "mask": "0x04",
+      "action": "f11",
+      "trigger": "press"
+    },
+    {
+      "button": "Back/On",
+      "char": "1002",
+      "type": "button",
+      "byte": 6,
+      "bit": 5,
+      "mask": "0x20",
+      "action": "escape",
+      "trigger": "press"
+    },
+    {
+      "button": "A",
+      "char": "1002",
+      "type": "button",
+      "byte": 7,
+      "bit": 3,
+      "mask": "0x08",
+      "action": "left",
+      "trigger": "press"
+    },
+    {
+      "button": "B",
+      "char": "1002",
+      "type": "button",
+      "byte": 7,
+      "bit": 1,
+      "mask": "0x02",
+      "action": "right",
+      "trigger": "press"
+    },
+    {
+      "button": "X",
+      "char": "1002",
+      "type": "button",
+      "byte": 6,
+      "bit": 6,
+      "mask": "0x40",
+      "action": "scroll_up",
+      "trigger": "press"
+    },
+    {
+      "button": "Y",
+      "char": "1002",
+      "type": "button",
+      "byte": 6,
+      "bit": 7,
+      "mask": "0x80",
+      "action": "scroll_down",
+      "trigger": "press"
+    },
+    {
+      "button": "Analog-Up",
+      "char": "1002",
+      "type": "button",
+      "byte": 2,
+      "bit": 1,
+      "mask": "0x02",
+      "action": "scroll_up",
+      "trigger": "press"
+    },
+    {
+      "button": "Analog-Down",
+      "char": "1002",
+      "type": "button",
+      "byte": 2,
+      "bit": 5,
+      "mask": "0x20",
+      "action": "scroll_down",
+      "trigger": "press"
+    }
+  ]
+}

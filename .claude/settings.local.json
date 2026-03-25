@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:telepromptermirror.com)",
+      "WebSearch",
+      "Bash(python -m venv venv)",
+      "Bash(venv/Scripts/pip install:*)",
+      "Bash(powershell -command \"Get-PnpDevice | Where-Object { $_.FriendlyName -like '*FEELWORLD*' -or $_.FriendlyName -like '*feel*' -or $_.FriendlyName -like '*05*' } | Select-Object FriendlyName, Status, InstanceId | Format-List\" 2>&1)",
+      "Bash(powershell -Command \"Get-PnpDevice -Class Bluetooth | Select-Object FriendlyName, Status, InstanceId | Format-List\")",
+      "Bash(timeout 5 venv/Scripts/python diagnose.py)",
+      "Bash(venv/Scripts/python -c \":*)",
+      "Bash(venv/Scripts/python -c \"import diagnose; print\\(''import OK''\\)\")",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(venv/Scripts/python -c \"import diagnose; print\\(''OK''\\)\")",
+      "Bash(xxd)",
+      "Bash(venv/Scripts/python -c \"import bleak; print\\(''bleak'', bleak.__version__\\)\")",
+      "Bash(venv/Scripts/python -c \"from bleak import BleakClient, BleakScanner; print\\(''bleak OK''\\)\")",
+      "Bash(venv/Scripts/python -c \"import controller; print\\(''OK''\\)\")"
+    ]
+  }
+}
