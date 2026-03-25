@@ -6,5 +6,5 @@ echo  ==========================================
 echo    FEELWORLD-05  Controller
 echo  ==========================================
 echo.
-venv\Scripts\python controller.py
+uv run controller.py
 pause

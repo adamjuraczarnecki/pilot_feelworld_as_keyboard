@@ -37,39 +37,23 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 echo
-info "[1/4] Checking Python..."
-if ! command -v python3 &>/dev/null; then
-    err "Python3 not found. Install it:\n  sudo apt install python3 python3-venv\n  or: sudo dnf install python3"
+info "[1/3] Checking uv..."
+if ! command -v uv &>/dev/null; then
+    info "uv not found, installing..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    export PATH="$HOME/.local/bin:$PATH"
+    command -v uv &>/dev/null || err "uv installation failed. Install manually: https://docs.astral.sh/uv/getting-started/installation/"
 fi
-
-PY_VER=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
-PY_MAJOR=${PY_VER%%.*}
-PY_MINOR=${PY_VER##*.}
-
-if [ "$PY_MAJOR" -lt 3 ] || { [ "$PY_MAJOR" -eq 3 ] && [ "$PY_MINOR" -lt 10 ]; }; then
-    err "Python 3.10+ required, you have $(python3 --version). Please upgrade."
-fi
-ok "$(python3 --version)"
+ok "$(uv --version)"
 
 echo
-info "[2/4] Virtual environment..."
-if [ -f "venv/bin/python" ]; then
-    ok "venv already exists"
-else
-    python3 -m venv venv 2>/dev/null || \
-        err "venv module missing. Install it:\n  sudo apt install python3-venv"
-    ok "venv created"
-fi
-
-echo
-info "[3/4] Installing dependencies (bleak, pynput)..."
-venv/bin/pip install --upgrade pip -q
-venv/bin/pip install -r requirements.txt || err "Dependency installation failed."
+info "[2/3] Installing dependencies..."
+uv sync || err "Dependency installation failed."
 ok "Dependencies installed"
 
 echo
-info "[4/4] Verifying imports..."
-venv/bin/python - <<'EOF'
+info "[3/3] Verifying imports..."
+uv run python - <<'EOF'
 import bleak, pynput, importlib.metadata
 print(f"  [OK] bleak {importlib.metadata.version('bleak')}  |  pynput OK")
 EOF
@@ -115,4 +99,4 @@ echo    "  Click on the teleprompter browser window,"
 echo    "  then use the remote. Ctrl+C to stop."
 echo
 
-venv/bin/python controller.py
+uv run controller.py

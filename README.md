@@ -27,15 +27,9 @@ The installer creates a virtualenv, installs dependencies, verifies imports, and
 ## Manual setup
 
 ```bash
-python -m venv venv
-
-# Windows
-venv\Scripts\pip install -r requirements.txt
-venv\Scripts\python controller.py
-
-# Linux
-venv/bin/pip install -r requirements.txt
-venv/bin/python controller.py
+# Install uv if you don't have it: https://docs.astral.sh/uv/getting-started/installation/
+uv sync
+uv run controller.py
 ```
 
 Click into the browser/teleprompter window, then use the remote.
@@ -149,6 +143,7 @@ Analog axis events use debounce + hysteresis to prevent phantom triggers on rele
 
 ## Requirements
 
-- Python 3.10+
+- [uv](https://docs.astral.sh/uv/) — installed automatically by the installer scripts
+- Python 3.10+ — managed automatically by uv
 - `bleak >= 0.21` — cross-platform BLE
-- `pynput >= 1.7` — keyboard/mouse injection
+- `pynput == 1.7.7` — keyboard/mouse injection

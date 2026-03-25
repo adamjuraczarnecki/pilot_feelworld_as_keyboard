@@ -11,54 +11,40 @@ call :beep_start
 
 cd /d "%~dp0"
 
-echo [1/4] Checking Python...
-python --version >nul 2>&1
+echo [1/3] Checking uv...
+where uv >nul 2>&1
 if errorlevel 1 (
-    call :beep_err
-    echo.
-    echo  [ERROR] Python is not installed or not in PATH.
-    echo         Download from: https://python.org
-    echo         Make sure to check "Add to PATH" during installation.
-    echo.
-    pause
-    exit /b 1
-)
-for /f "tokens=*" %%v in ('python --version 2^>^&1') do set PYVER=%%v
-echo  [OK] !PYVER!
-call :beep_ok
-
-echo.
-echo [2/4] Virtual environment...
-if exist "venv\Scripts\python.exe" (
-    echo  [OK] venv already exists
-) else (
-    python -m venv venv
+    echo   [..] uv not found, installing...
+    powershell -NoProfile -Command "irm https://astral.sh/uv/install.ps1 | iex"
+    set "PATH=%USERPROFILE%\.local\bin;%APPDATA%\Local\uv\bin;%PATH%"
+    where uv >nul 2>&1
     if errorlevel 1 (
         call :beep_err
-        echo  [ERROR] Could not create venv.
+        echo  [ERROR] uv installation failed.
+        echo         Install manually: https://docs.astral.sh/uv/getting-started/installation/
         pause
         exit /b 1
     )
-    echo  [OK] venv created
 )
+for /f "tokens=*" %%v in ('uv --version 2^>^&1') do set UVVER=%%v
+echo   [OK] !UVVER!
 call :beep_ok
 
 echo.
-echo [3/4] Installing dependencies (bleak, pynput)...
-venv\Scripts\pip install --upgrade pip -q 2>nul
-venv\Scripts\pip install -r requirements.txt
+echo [2/3] Installing dependencies...
+uv sync
 if errorlevel 1 (
     call :beep_err
     echo  [ERROR] Dependency installation failed.
     pause
     exit /b 1
 )
-echo  [OK] Dependencies installed
+echo   [OK] Dependencies installed
 call :beep_ok
 
 echo.
-echo [4/4] Verifying imports...
-venv\Scripts\python -c "import bleak, pynput, importlib.metadata; print('  [OK] bleak', importlib.metadata.version('bleak'))"
+echo [3/3] Verifying imports...
+uv run python -c "import bleak, pynput, importlib.metadata; print('  [OK] bleak', importlib.metadata.version('bleak'))"
 if errorlevel 1 (
     call :beep_err
     echo  [ERROR] Failed to import bleak/pynput.
@@ -106,7 +92,7 @@ echo  Click on the browser window with the teleprompter,
 echo  then use the remote. Press Ctrl+C to stop.
 echo.
 
-venv\Scripts\python controller.py
+uv run controller.py
 pause
 goto :eof
 

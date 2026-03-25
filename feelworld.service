@@ -6,7 +6,7 @@ Wants=bluetooth.target
 [Service]
 Type=simple
 WorkingDirectory=%h/pilot_feelworld_as_keyboard
-ExecStart=%h/pilot_feelworld_as_keyboard/venv/bin/python controller.py
+ExecStart=%h/.local/bin/uv run controller.py
 Environment=PYTHONUNBUFFERED=1
 StandardOutput=journal
 StandardError=journal
